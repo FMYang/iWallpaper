@@ -1,2 +1,2 @@
 # iWallpaper
-手机壁纸
+phone wallpaper
