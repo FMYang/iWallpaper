@@ -27,9 +27,9 @@ extension ListAPI: APITarget {
         switch self {
         case .list(let source, let page):
 //            "/FMYang/wallpaper/-/raw/main/category/\(source.rawValue)/\(page).json?ref_type=heads".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            "/en-us/api/v3/search/photos?page=\(page)&per_page=100&query=\(source.rawValue)&orientation=portrait&size=all&color=all&seo_tags=true".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+            "/zh-cn/api/v3/search/photos?page=\(page)&per_page=100&query=\(source.rawValue)&orientation=portrait&size=all&color=all&seo_tags=true".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         case .search(let text, let page):
-            "/en-us/api/v3/search/photos?page=\(page)&per_page=200&query=\(text)&orientation=portrait&size=all&color=all&seo_tags=true".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+            "/zh-cn/api/v3/search/photos?page=\(page)&per_page=200&query=\(text)&orientation=portrait&size=all&color=all&seo_tags=true".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         }
     }
     

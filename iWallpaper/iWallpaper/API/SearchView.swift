@@ -64,6 +64,11 @@ class SearchVC: UIViewController {
         return view
     }()
 
+    lazy var activityView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .medium)
+        view.color = .gray
+        return view
+    }()
     
     lazy var noDataLabel: UILabel = {
         let label = UILabel()
@@ -78,7 +83,7 @@ class SearchVC: UIViewController {
     var datasource: [Item] = [] {
         didSet {
             resultCollectionView.reloadData()
-            noDataLabel.isHidden = datasource.count > 0
+//            noDataLabel.isHidden = datasource.count > 0
         }
     }
     
@@ -107,10 +112,12 @@ class SearchVC: UIViewController {
     
     func search(text: String) {
         if !text.isEmpty {
-            page = Int(arc4random_uniform(50)) + 1
+            datasource = []
+            page = 1//Int(arc4random_uniform(50)) + 1
             searchApi(text: text)
         } else {
             datasource = []
+            noDataLabel.isHidden = false
         }
     }
     
@@ -138,6 +145,7 @@ class SearchVC: UIViewController {
         contentView.addSubview(cancelButton)
         contentView.addSubview(resultCollectionView)
         contentView.addSubview(noDataLabel)
+        contentView.addSubview(activityView)
         
         contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -181,6 +189,10 @@ class SearchVC: UIViewController {
             make.right.equalToSuperview().offset(-20)
             make.top.equalTo(searchView.snp.bottom).offset(20)
         }
+        
+        activityView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
 
 }
@@ -221,11 +233,17 @@ extension SearchVC: UIScrollViewDelegate {
 
 extension SearchVC {
     func searchApi(text: String, refresh: Bool = true) {
+        if refresh {
+            noDataLabel.isHidden = true
+            activityView.startAnimating()
+        }
         APIService.request1(target: ListAPI.search(text, page), type: SearchResult.self) { [weak self] response in
+            self?.activityView.stopAnimating()
             switch response.result {
             case .success(let data):
                 if refresh {
                     self?.datasource = data.tranformToItems()
+                    self?.noDataLabel.isHidden = (self?.datasource.count ?? 0 > 0)
                 } else {
                     self?.datasource += data.tranformToItems()
                 }
