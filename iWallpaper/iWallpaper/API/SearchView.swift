@@ -113,7 +113,7 @@ class SearchVC: UIViewController {
     func search(text: String) {
         if !text.isEmpty {
             datasource = []
-            page = 1//Int(arc4random_uniform(50)) + 1
+            page = 1 //Int(arc4random_uniform(50)) + 1
             searchApi(text: text)
         } else {
             datasource = []
